@@ -1,7 +1,8 @@
 <script setup></script>
 
 <template>
-  <el-button type="primary">Primary</el-button>
+  <!-- 一级路由入口 -->
+  <RouterView />
 </template>
 
 <style scoped></style>
