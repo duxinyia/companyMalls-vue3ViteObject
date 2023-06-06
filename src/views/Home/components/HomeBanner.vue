@@ -5,7 +5,7 @@ let bannerList = ref([]);
 const getBanner = async () => {
   const res = await getBannerAPI();
   console.log("轮播图数据", res);
-  bannerList = res.result;
+  bannerList.value = res.result;
 };
 onMounted(() => {
   getBanner();
