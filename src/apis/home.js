@@ -11,3 +11,9 @@ export function getNewAPI() {
     url: "/home/new",
   });
 }
+// 人气推荐数据
+export function getHotAPI() {
+  return httpInstance({
+    url: "/home/hot",
+  });
+}
