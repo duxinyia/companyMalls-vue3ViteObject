@@ -17,3 +17,9 @@ export function getHotAPI() {
     url: "/home/hot",
   });
 }
+// 产品列表实现
+export function getProductAPI() {
+  return httpInstance({
+    url: "/home/goods",
+  });
+}
