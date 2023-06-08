@@ -3,12 +3,14 @@ import { getCategoryAPI } from "@/apis/category";
 import { ref, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 import { getBannerAPI } from "@/apis/home.js";
+import GoodsItem from "../Home/components/GoodsItem.vue";
 
 let categoryList = ref({});
 let route = useRoute();
 let getCategory = async () => {
   let res = await getCategoryAPI(route.params.id);
   categoryList.value = res.result;
+  console.log(1, res);
 };
 
 // 获取轮播图
@@ -45,6 +47,30 @@ watch(route, (newvalue) => {
             <img :src="item.imgUrl" alt="" />
           </el-carousel-item>
         </el-carousel>
+      </div>
+      <!-- 分类数据 -->
+      <div class="sub-list">
+        <h3>全部分类</h3>
+        <ul>
+          <li v-for="i in categoryList.children" :key="i.id">
+            <RouterLink to="/">
+              <img :src="i.picture" />
+              <p>{{ i.name }}</p>
+            </RouterLink>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="ref-goods"
+        v-for="item in categoryList.children"
+        :key="item.id"
+      >
+        <div class="head">
+          <h3>- {{ item.name }}-</h3>
+        </div>
+        <div class="body">
+          <GoodsItem v-for="good in item.goods" :good="good" :key="good.id" />
+        </div>
       </div>
     </div>
   </div>
