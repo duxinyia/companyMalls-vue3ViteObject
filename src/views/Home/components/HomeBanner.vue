@@ -4,7 +4,6 @@ import { ref, onMounted } from "vue";
 let bannerList = ref([]);
 const getBanner = async () => {
   const res = await getBannerAPI();
-  console.log("轮播图数据", res);
   bannerList.value = res.result;
 };
 onMounted(() => {
