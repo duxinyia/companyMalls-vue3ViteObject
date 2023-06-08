@@ -4,11 +4,12 @@ import { ref, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 import { getBannerAPI } from "@/apis/home.js";
 import GoodsItem from "../Home/components/GoodsItem.vue";
+import { onBeforeRouteUpdate } from "vue-router";
 
 let categoryList = ref({});
 let route = useRoute();
-let getCategory = async () => {
-  let res = await getCategoryAPI(route.params.id);
+let getCategory = async (id = route.params.id) => {
+  let res = await getCategoryAPI(id);
   categoryList.value = res.result;
   console.log(1, res);
 };
@@ -25,9 +26,14 @@ onMounted(() => {
   getCategory();
   getBanner();
 });
-watch(route, (newvalue) => {
-  getCategory();
+// 路由参数变化的时候重新请求数据
+onBeforeRouteUpdate((to) => {
+  // 存在问题:使用最新的路由参数请求最新的分类数据 所以使用to
+  getCategory(to.params.id);
 });
+// watch(route, (newvalue) => {
+//   getCategory();
+// });
 </script>
 
 <template>
