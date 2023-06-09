@@ -7,9 +7,11 @@ import GoodsItem from "../Home/components/GoodsItem.vue";
 // import { onBeforeRouteUpdate } from "vue-router";
 import { useBanner } from "./composables/useBanner.js";
 import { useCategory } from "./composables/useCategory.js";
+
 // 轮播图
 let { bannerList } = useBanner();
 let { categoryList } = useCategory();
+
 // 分类
 // let categoryList = ref({});
 // let route = useRoute();
