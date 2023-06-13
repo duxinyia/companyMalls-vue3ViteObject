@@ -9,7 +9,7 @@ let categoryFilterList = ref({});
 let getCategoryFilter = async () => {
   let res = await getCategoryFilterAPI(route.params.id);
   categoryFilterList.value = res.result;
-  console.log(res);
+  // console.log(res);
 };
 onMounted(() => {
   getCategoryFilter();
@@ -25,7 +25,7 @@ let reqData = ref({
 });
 let getGoodList = async () => {
   let res = await getSubCategoryAPI(reqData.value);
-  console.log(res);
+  // console.log(res);
   goodList.value = res.result.items;
 };
 // tab切换回调
