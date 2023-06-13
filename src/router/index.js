@@ -34,7 +34,7 @@ const router = createRouter({
       component: Login,
     },
   ],
-  // 路由滚动行为定制
+  // 路由滚动行为定制 从二级路由的页面切换到一级路由页面，滚动条回到顶部
   scrollBehavior() {
     return {
       top: 0,
