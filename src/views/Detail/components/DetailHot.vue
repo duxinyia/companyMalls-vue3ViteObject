@@ -61,6 +61,7 @@ onMounted(() => {
     font-weight: normal;
   }
   .goods-item {
+    width: 280px;
     display: block;
     padding: 20px 30px;
     text-align: center;
