@@ -1,5 +1,7 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
+// 拿到鼠标相对位置
+import { useMouseInElement } from "@vueuse/core";
 // 图片列表
 const imageList = [
   "https://yanxuan-item.nosdn.127.net/d917c92e663c5ed0bb577c7ded73e4ec.png",
@@ -13,6 +15,45 @@ const activeIndex = ref(0);
 let enterhandler = (i) => {
   activeIndex.value = i;
 };
+// 拿到鼠标相对位置
+let target = ref(null);
+const { elementX, elementY, isOutside } = useMouseInElement(target);
+
+// 鼠标有效移动范围内的计算逻辑：(大图宽高400px)
+// 横向：100<elementX<300 ,left=elementX-小滑块宽度的一半
+// 纵向：100<elementY<300 ,top=elementY-小滑块宽度的一半
+// 边界距离控制
+// 横向：elementX>300 left=200 elementX<100 left=0
+// 纵向：elementY>300 top=200 elementY<100 top=0
+
+let left = ref(0);
+let top = ref(0);
+let watchxy = watch([elementX, elementY], () => {
+  // 有效移动范围内控制滑块距离
+  // 横向
+  if (elementX.value > 100 && elementX.value < 300) {
+    left.value = elementX.value - 100;
+  }
+  // 纵向
+  if (elementY.value > 100 && elementY.value < 300) {
+    top.value = elementY.value - 100;
+  }
+  // 边界距离控制
+  if (elementX.value > 300) {
+    left.value = 200;
+  }
+  if (elementX.value < 100) {
+    left.value = 0;
+  }
+  if (elementY.value > 300) {
+    top.value = 200;
+  }
+  if (elementY.value < 100) {
+    top.value = 0;
+  }
+});
+if (!isOutside) {
+}
 </script>
 <template>
   <div class="goods-image">
@@ -20,7 +61,7 @@ let enterhandler = (i) => {
     <div class="middle" ref="target">
       <img :src="imageList[activeIndex]" alt="" />
       <!-- 蒙层小滑块 -->
-      <div class="layer" :style="{ left: '0px', top: '0px' }"></div>
+      <div class="layer" :style="{ left: `${left}px`, top: `${top}px` }"></div>
     </div>
     <!-- 小图列表 -->
     <ul class="small">
