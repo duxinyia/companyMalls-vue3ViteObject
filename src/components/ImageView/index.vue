@@ -28,7 +28,13 @@ const { elementX, elementY, isOutside } = useMouseInElement(target);
 
 let left = ref(0);
 let top = ref(0);
+
+let bigLeft = ref(0);
+let bigTop = ref(0);
 let watchxy = watch([elementX, elementY], () => {
+  // 如果鼠标没有移入到盒子里面，直接不执行后面的逻辑
+  if (isOutside.value) return;
+  // console.log("后续逻辑执行");
   // 有效移动范围内控制滑块距离
   // 横向
   if (elementX.value > 100 && elementX.value < 300) {
@@ -41,19 +47,21 @@ let watchxy = watch([elementX, elementY], () => {
   // 边界距离控制
   if (elementX.value > 300) {
     left.value = 200;
-  }
-  if (elementX.value < 100) {
+  } else if (elementX.value < 100) {
     left.value = 0;
   }
+
   if (elementY.value > 300) {
     top.value = 200;
-  }
-  if (elementY.value < 100) {
+  } else if (elementY.value < 100) {
     top.value = 0;
   }
+  // 为了实现放大效果，大图的宽高是小图的两倍
+  // 大图移动的方向和滑块移动的方向相反，且倍数为2倍
+  // 控制大图的展示
+  bigLeft = -left.value * 2;
+  bigTop = -top.value * 2;
 });
-if (!isOutside) {
-}
 </script>
 <template>
   <div class="goods-image">
@@ -61,7 +69,11 @@ if (!isOutside) {
     <div class="middle" ref="target">
       <img :src="imageList[activeIndex]" alt="" />
       <!-- 蒙层小滑块 -->
-      <div class="layer" :style="{ left: `${left}px`, top: `${top}px` }"></div>
+      <div
+        v-show="!isOutside"
+        class="layer"
+        :style="{ left: `${left}px`, top: `${top}px` }"
+      ></div>
     </div>
     <!-- 小图列表 -->
     <ul class="small">
@@ -79,12 +91,12 @@ if (!isOutside) {
       class="large"
       :style="[
         {
-          backgroundImage: `url(${imageList[0]})`,
-          backgroundPositionX: `0px`,
-          backgroundPositionY: `0px`,
+          backgroundImage: `url(${imageList[activeIndex]})`,
+          backgroundPositionX: `${bigLeft}px`,
+          backgroundPositionY: `${bigTop}px`,
         },
       ]"
-      v-show="false"
+      v-show="!isOutside"
     ></div>
   </div>
 </template>
