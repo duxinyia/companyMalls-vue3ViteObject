@@ -21,6 +21,7 @@ onMounted(() => {
     <div class="container" v-if="detailList.details">
       <div class="bread-container">
         <el-breadcrumb separator=">">
+          <!-- 面包屑导航 -->
           <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
           <!-- 错误原因： detailList一开始是一个空对象，空对象.categories得到undifined->undifined[1]
           可选链语法?.
@@ -44,7 +45,7 @@ onMounted(() => {
           <div class="goods-info">
             <div class="media">
               <!-- 图片预览区 -->
-              <ImageView />
+              <ImageView :imageList="detailList.mainPictures" />
               <!-- 统计计数 -->
               <ul class="goods-sales">
                 <li>
