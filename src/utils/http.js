@@ -1,5 +1,8 @@
 // axios基础封装
 import axios from "axios";
+// 如果使用 unplugin-element-plus 并且只使用组件 API，你需要手动导入样式。
+import "element-plus/theme-chalk/el-message.css";
+import { ElMessage } from "element-plus";
 const httpInstance = axios.create({
   baseURL: "http://pcapi-xiaotuxian-front-devtest.itheima.net",
   timeout: 5000,
@@ -16,6 +19,8 @@ httpInstance.interceptors.request.use(
 httpInstance.interceptors.response.use(
   (res) => res.data,
   (e) => {
+    // 统一错误提示
+    ElMessage({ type: "warning", message: e.response.data.message });
     return Promise.reject(e);
   }
 );

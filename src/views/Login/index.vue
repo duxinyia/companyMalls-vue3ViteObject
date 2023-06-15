@@ -1,5 +1,15 @@
 <script setup>
 import { ref } from "vue";
+import { getLoginAPI } from "@/apis/user";
+// 如果使用 unplugin-element-plus 并且只使用组件 API，你需要手动导入样式。
+import "element-plus/theme-chalk/el-message.css";
+import { ElMessage } from "element-plus";
+
+import { useRouter } from "vue-router";
+let formList = ref([
+  { name: "账户", prop: "account" },
+  { name: "密码", prop: "password" },
+]);
 // 表单验证(账号名-密码)
 // 1.准备表单对象
 let form = ref({
@@ -28,6 +38,26 @@ let rules = {
     },
   ],
 };
+// 3.获取form实例做统一校验
+let formRef = ref(null);
+const router = useRouter();
+let doLogin = () => {
+  const { account, password } = form.value;
+  // 调用实例方法
+  formRef.value.validate(async (valid) => {
+    // valid:所有表单都通过校验，才为true
+    // 以valid作为判断条件，如果通过校验才执行登录逻辑
+    if (valid) {
+      // 登录
+      let res = await getLoginAPI({ account, password });
+      console.log(res);
+      // 1.提示用户
+      ElMessage({ type: "success", message: "登录成功" });
+      // 2.跳转到首页 replace为了防止用户返回登录页面
+      router.replace({ path: "/" });
+    }
+  });
+};
 </script>
 
 <template>
@@ -52,24 +82,29 @@ let rules = {
         <div class="account-box">
           <div class="form">
             <el-form
+              ref="formRef"
               label-position="right"
               label-width="60px"
               status-icon
               :model="form"
               :rules="rules"
             >
-              <el-form-item prop="account" label="账户">
-                <el-input v-model="form.account" />
-              </el-form-item>
-              <el-form-item prop="password" label="密码">
-                <el-input v-model="form.password" />
+              <el-form-item
+                v-for="item in formList"
+                :key="item.prop"
+                :prop="item.prop"
+                :label="item.name"
+              >
+                <el-input v-model="form[item.prop]" />
               </el-form-item>
               <el-form-item prop="agree" label-width="22px">
                 <el-checkbox v-model="form.agree" size="large">
                   我已同意隐私条款和服务条款
                 </el-checkbox>
               </el-form-item>
-              <el-button size="large" class="subBtn">点击登录</el-button>
+              <el-button size="large" class="subBtn" @click="doLogin"
+                >点击登录</el-button
+              >
             </el-form>
           </div>
         </div>
