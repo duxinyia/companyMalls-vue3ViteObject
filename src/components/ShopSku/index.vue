@@ -96,7 +96,7 @@ const updateDisabledStatus = (specs, pathMap) => {
 };
 
 export default {
-  name: "XtxGoodSku",
+  name: "ShopGoodSku",
   props: {
     // specs:所有的规格信息  skus:所有的sku组合
     goods: {
@@ -164,7 +164,7 @@ export default {
   cursor: pointer;
 
   &.selected {
-    border-color: $xtxColor;
+    border-color: $themeColor;
   }
 
   &.disabled {

@@ -8,6 +8,8 @@ import App from "./App.vue";
 import router from "./router";
 // 引入懒加载插件
 import { lazyPlugin } from "@/directives";
+// 引用全局组件插件
+import { componentPlugin } from "@/components/index.js";
 const app = createApp(App);
 app.use(createPinia());
 app.use(router);
@@ -15,6 +17,8 @@ app.use(router);
 app.mount("#app");
 //注册懒加载插件
 app.use(lazyPlugin);
+// 注册全局组件插件
+app.use(componentPlugin);
 
 // 定义全局指令
 // app.directive("img-lazy", {

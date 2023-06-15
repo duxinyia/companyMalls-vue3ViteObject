@@ -3,7 +3,8 @@ import DetailHot from "./components/DetailHot.vue";
 import { getDetailAPI } from "@/apis/detail";
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import ImageView from "@/components/ImageView/index.vue";
+// import ImageView from "@/components/ImageView/index.vue";
+// import ShopSku from "@/components/ShopSku/index.vue";
 
 let detailList = ref({});
 let route = useRoute();
@@ -15,6 +16,10 @@ let getDetail = async () => {
 onMounted(() => {
   getDetail();
 });
+// sku规格被操作时
+const skuChange = (sku) => {
+  // console.log(sku);
+};
 </script>
 <template>
   <div class="goods-page">
@@ -94,6 +99,7 @@ onMounted(() => {
                 </dl>
               </div>
               <!-- sku组件 -->
+              <ShopSku :goods="detailList" @change="skuChange" />
               <!-- 数据组件 -->
               <!-- 按钮组件 -->
               <div>
