@@ -1,11 +1,14 @@
 <script setup>
 import { ref } from "vue";
-import { getLoginAPI } from "@/apis/user";
+// import { getLoginAPI } from "@/apis/user";
 // 如果使用 unplugin-element-plus 并且只使用组件 API，你需要手动导入样式。
 import "element-plus/theme-chalk/el-message.css";
 import { ElMessage } from "element-plus";
 
 import { useRouter } from "vue-router";
+// 将登录接口放入pinia
+import { useUserStore } from "@/stores/user";
+const userStore = useUserStore();
 let formList = ref([
   { name: "账户", prop: "account" },
   { name: "密码", prop: "password" },
@@ -49,8 +52,9 @@ let doLogin = () => {
     // 以valid作为判断条件，如果通过校验才执行登录逻辑
     if (valid) {
       // 登录
-      let res = await getLoginAPI({ account, password });
-      console.log(res);
+      // let res = await getLoginAPI({ account, password });
+      // console.log(res);
+      await userStore.getUserInfo({ account, password });
       // 1.提示用户
       ElMessage({ type: "success", message: "登录成功" });
       // 2.跳转到首页 replace为了防止用户返回登录页面
@@ -65,7 +69,7 @@ let doLogin = () => {
     <header class="login-header">
       <div class="container m-top-20">
         <h1 class="logo">
-          <RouterLink to="/">小兔鲜</RouterLink>
+          <RouterLink to="/">logo</RouterLink>
         </h1>
         <RouterLink class="entry" to="/">
           进入网站首页
