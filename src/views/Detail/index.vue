@@ -3,6 +3,8 @@ import DetailHot from "./components/DetailHot.vue";
 import { getDetailAPI } from "@/apis/detail";
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
+import { ElMessage } from "element-plus";
+import { useCartStore } from "@/stores/cartStore";
 // import ImageView from "@/components/ImageView/index.vue";
 // import ShopSku from "@/components/ShopSku/index.vue";
 
@@ -17,8 +19,34 @@ onMounted(() => {
   getDetail();
 });
 // sku规格被操作时
+let skuObj = {};
 const skuChange = (sku) => {
   // console.log(sku);
+  skuObj = sku;
+};
+let count = ref(1);
+let countChange = (count) => {
+  console.log(count);
+};
+let cartStore = useCartStore();
+// 添加购物车
+let addCart = () => {
+  if (skuObj.skuId) {
+    // 规格已经选择 触发piana里面的action
+    cartStore.addCart({
+      id: detailList.value.id,
+      name: detailList.value.name,
+      picture: detailList.value.mainPictures[0],
+      price: detailList.value.price,
+      count: count.value,
+      skuId: skuObj.skuId,
+      attrsText: skuObj.specsText,
+      selected: true,
+    });
+  } else {
+    // 规格没有选择 提示用户
+    ElMessage.warning("请选择规格");
+  }
 };
 </script>
 <template>
@@ -101,9 +129,17 @@ const skuChange = (sku) => {
               <!-- sku组件 -->
               <ShopSku :goods="detailList" @change="skuChange" />
               <!-- 数据组件 -->
+              <el-input-number
+                v-model="count"
+                :min="1"
+                :max="10"
+                @change="countChange"
+              />
               <!-- 按钮组件 -->
               <div>
-                <el-button size="large" class="btn">加入购物车</el-button>
+                <el-button size="large" class="btn" @click="addCart"
+                  >加入购物车</el-button
+                >
               </div>
             </div>
           </div>
