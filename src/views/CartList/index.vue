@@ -7,6 +7,10 @@ let singleCheck = (i, selected) => {
   // store 里面的cartList
   cartStore.singleCheck(i.skuId, selected);
 };
+// 全选框
+let all = (selected) => {
+  cartStore.allCheck(selected);
+};
 </script>
 
 <template>
@@ -17,7 +21,7 @@ let singleCheck = (i, selected) => {
           <thead>
             <tr>
               <th width="120">
-                <el-checkbox />
+                <el-checkbox :model-value="cartStore.isAll" @change="all" />
               </th>
               <th width="400">商品信息</th>
               <th width="220">单价</th>
