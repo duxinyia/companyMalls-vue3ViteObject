@@ -11,6 +11,9 @@ let singleCheck = (i, selected) => {
 let all = (selected) => {
   cartStore.allCheck(selected);
 };
+let delCart = (id) => {
+  cartStore.delCart(id);
+};
 </script>
 
 <template>
