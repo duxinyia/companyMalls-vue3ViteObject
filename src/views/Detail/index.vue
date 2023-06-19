@@ -26,7 +26,7 @@ const skuChange = (sku) => {
 };
 let count = ref(1);
 let countChange = (count) => {
-  console.log(count);
+  // console.log(count);
 };
 let cartStore = useCartStore();
 // 添加购物车
@@ -129,12 +129,7 @@ let addCart = () => {
               <!-- sku组件 -->
               <ShopSku :goods="detailList" @change="skuChange" />
               <!-- 数据组件 -->
-              <el-input-number
-                v-model="count"
-                :min="1"
-                :max="10"
-                @change="countChange"
-              />
+              <el-input-number v-model="count" :min="1" @change="countChange" />
               <!-- 按钮组件 -->
               <div>
                 <el-button size="large" class="btn" @click="addCart"
