@@ -28,3 +28,11 @@ export function delCartAPI(ids) {
     },
   });
 }
+// 将存储到本地的购物车列表合并登录的购物车
+export function mergeCartAPI(data) {
+  return httpInstance({
+    url: "/member/cart/merge",
+    method: "POST",
+    data,
+  });
+}

@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import { useCartStore } from "@/stores/cartStore";
+
 // import { getLoginAPI } from "@/apis/user";
 // 如果使用 unplugin-element-plus 并且只使用组件 API，你需要手动导入样式。
 import "element-plus/theme-chalk/el-message.css";
@@ -9,7 +9,6 @@ import { ElMessage } from "element-plus";
 import { useRouter } from "vue-router";
 // 将登录接口放入pinia
 import { useUserStore } from "@/stores/userStore";
-const cartStore = useCartStore();
 const userStore = useUserStore();
 let formList = ref([
   { name: "账户", prop: "account" },
@@ -61,7 +60,6 @@ let doLogin = () => {
       ElMessage({ type: "success", message: "登录成功" });
       // 2.跳转到首页 replace为了防止用户返回登录页面
       router.replace({ path: "/" });
-      cartStore.updataNewList();
     }
   });
 };
