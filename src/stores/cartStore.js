@@ -1,8 +1,8 @@
 // 封装购物车模块
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
-import { useUserStore } from "./user.js";
-import { getCartAPI, getCartListAPI } from "@/apis/cart.js";
+import { useUserStore } from "./userStore.js";
+import { getCartAPI, getCartListAPI, delCartAPI } from "@/apis/cart.js";
 export const useCartStore = defineStore(
   "cart",
   () => {
@@ -10,14 +10,18 @@ export const useCartStore = defineStore(
     let isLogin = computed(() => userStore.userInfo.token);
     // 1.定义state--cartList
     let cartList = ref([]);
+    // 获取最新购物车列表
+    const updataNewList = async () => {
+      let res = await getCartListAPI();
+      cartList.value = res.result;
+    };
     // 2.定义action--addCart
     let addCart = async (goods) => {
       let { skuId, count } = goods;
       // 如果有token值，登录了
       if (isLogin.value) {
         await getCartAPI({ skuId, count });
-        let res = await getCartListAPI();
-        cartList.value = res.result;
+        updataNewList();
       } else {
         // 添加购物车操作 通过匹配传过来的商品对象中的skuId能不能在cartList里面找到，找到了就是添加过
         const item = cartList.value.find((item) => goods.skuId === item.skuId);
@@ -31,10 +35,16 @@ export const useCartStore = defineStore(
       }
     };
     // 删除购物车
-    const delCart = (skuId) => {
-      let idx = cartList.value.findIndex((item) => skuId === item.skuId);
-      cartList.value.splice(idx, 1);
+    const delCart = async (skuId) => {
+      if (isLogin.value) {
+        await delCartAPI([skuId]);
+        updataNewList();
+      } else {
+        let idx = cartList.value.findIndex((item) => skuId === item.skuId);
+        cartList.value.splice(idx, 1);
+      }
     };
+
     // 单选功能
     const singleCheck = (skuId, selected) => {
       // 通过skuId找到要修改的那一项，然后把它的selected修改为传过来的selected

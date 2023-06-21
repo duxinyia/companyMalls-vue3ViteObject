@@ -7,7 +7,7 @@ import { ElMessage } from "element-plus";
 
 import { useRouter } from "vue-router";
 // 将登录接口放入pinia
-import { useUserStore } from "@/stores/user";
+import { useUserStore } from "@/stores/userStore";
 const userStore = useUserStore();
 let formList = ref([
   { name: "账户", prop: "account" },

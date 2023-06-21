@@ -19,9 +19,12 @@ export function getCartListAPI() {
   });
 }
 // 删除购物车
-export function delCartAPI() {
+export function delCartAPI(ids) {
   return httpInstance({
     url: "/member/cart",
     method: "DELETE",
+    data: {
+      ids,
+    },
   });
 }
