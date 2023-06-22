@@ -6,3 +6,11 @@ export function getCheckoutInfoAPI() {
     url: "/member/order/pre",
   });
 }
+// 创建订单
+export function creatOrderAPI(data) {
+  return httpInstance({
+    url: "/member/order",
+    method: "POST",
+    data,
+  });
+}
