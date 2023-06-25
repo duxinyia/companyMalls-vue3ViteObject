@@ -11,3 +11,12 @@ export function getLoginAPI({ account, password }) {
     },
   });
 }
+// 会员中心猜你喜欢接口
+export const getLikeListAPI = ({ limit = 4 }) => {
+  return httpInstance({
+    url: "/goods/relevant",
+    params: {
+      limit,
+    },
+  });
+};
